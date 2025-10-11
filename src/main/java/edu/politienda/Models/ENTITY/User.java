@@ -49,8 +49,9 @@ public class user implements Serializable {
 
     }
 
-    public user(String nombre, String emailInstitucional, String contraseña, String telefono, Rol rol) {
+    public user(Long IdUsuario, String nombre, String emailInstitucional, String contraseña, String telefono, Rol rol) {
     
+    this.IdUsuario= IdUsuario;
     this.Nombre = nombre;
     this.emailInstitucional = emailInstitucional;
     this.contrasena = contraseña;
@@ -59,7 +60,7 @@ public class user implements Serializable {
 
     }
 
-    public long getIdUsuario() {
+    public Long getIdUsuario() {
         return IdUsuario;
     }
 
