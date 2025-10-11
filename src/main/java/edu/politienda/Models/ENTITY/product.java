@@ -20,7 +20,7 @@ import jakarta.validation.constraints.Size;
 public class product {
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private long idProduct;
+    private Long idProduct;
 
     @NotBlank(message = "El nombre es obligatorio.")
     @Size(min = 4, message = "El nombre debe tener al menos 4 caracteres.")
@@ -42,7 +42,7 @@ public class product {
 
     }
 
-    public product(long idProduct, String nombre, Integer stock, BigDecimal money) {
+    public product(Long idProduct, String nombre, Integer stock, BigDecimal money) {
     
     this.idProduct = idProduct;
     this.nombre = nombre;
@@ -50,11 +50,11 @@ public class product {
     this.money = money;
     }
 
-    public long getIdProduct() {
+    public Long getIdProduct() {
         return idProduct;
     }
 
-    public void setIdProduct(long idProduct) {
+    public void setIdProduct(Long idProduct) {
         this.idProduct = idProduct;
     }
 

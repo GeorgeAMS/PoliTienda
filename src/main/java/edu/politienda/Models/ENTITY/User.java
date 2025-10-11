@@ -21,7 +21,7 @@ import jakarta.validation.constraints.Size;
 public class user implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long IdUsuario;
+    private Long IdUsuario;
     
     @NotBlank(message = "Recuerda, el mensaje no puede estar vacio.")
     @Size(min = 3, max = 50, message = "Oelo compita, el nombre debe tener entre 3 o 50 caracteres. " )
@@ -63,7 +63,7 @@ public class user implements Serializable {
         return IdUsuario;
     }
 
-    public void setIdUsuario(int idUsuario) {
+    public void setIdUsuario(Long idUsuario) {
         IdUsuario = idUsuario;
     }
 
