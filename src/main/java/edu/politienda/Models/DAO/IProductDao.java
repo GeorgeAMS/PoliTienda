@@ -16,5 +16,7 @@ public interface IProductDao {
 
     List<product> buscarPorNombre(String nombre);
 
+    user buscarPorNombreExacto(String nombre);
+
     
 }

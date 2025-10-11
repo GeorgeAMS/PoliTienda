@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import edu.politienda.Models.ENTITY.product;
+import edu.politienda.Models.ENTITY.user;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
@@ -45,6 +46,13 @@ public class ProductDaoImp implements IProductDao {
     @Override
     public List<product> buscarPorNombre(String nombre) {
         return em.createQuery("FROM Productos p WHERE LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))", product.class).setParameter("nombre",nombre).getResultList();
+    }
+
+    @Override
+    public List<product> buscarPorNombreExacto(String nombre) {
+        List<product> resultado = em.createQuery("FROM Product p WHERE LOWER(p.nombre) = LOWER(:nombre)", product.class).setParameter("nombre", nombre).getResultList();
+
+        return resultado.isEmpty() ? null : resultado.get(0);
     }
     
 
