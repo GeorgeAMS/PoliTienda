@@ -18,10 +18,10 @@ import jakarta.validation.constraints.Size;
 // ---- Definir la clase como una entidad y mapearla a una tabla ----
 @Entity
 @Table (name = "Usuario")
-public class User implements Serializable {
+public class user implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int IdUsuario;
+    private long IdUsuario;
     
     @NotBlank(message = "Recuerda, el mensaje no puede estar vacio.")
     @Size(min = 3, max = 50, message = "Oelo compita, el nombre debe tener entre 3 o 50 caracteres. " )
@@ -45,11 +45,11 @@ public class User implements Serializable {
     private Rol rol;
 
     //Obligatorio para que JPA cree objetos automaticamente desde la BD.
-    public User() { 
+    public user() { 
 
     }
 
-    public User(String nombre, String emailInstitucional, String contraseña, String telefono, Rol rol) {
+    public user(String nombre, String emailInstitucional, String contraseña, String telefono, Rol rol) {
     
     this.Nombre = nombre;
     this.emailInstitucional = emailInstitucional;
@@ -59,7 +59,7 @@ public class User implements Serializable {
 
     }
 
-    public int getIdUsuario() {
+    public long getIdUsuario() {
         return IdUsuario;
     }
 
