@@ -49,12 +49,12 @@ public class user implements Serializable {
 
     }
 
-    public user(Long IdUsuario, String nombre, String emailInstitucional, String contraseña, String telefono, Rol rol) {
+    public user(Long IdUsuario, String nombre, String emailInstitucional, String contrasena, String telefono, Rol rol) {
     
     this.IdUsuario= IdUsuario;
     this.Nombre = nombre;
     this.emailInstitucional = emailInstitucional;
-    this.contrasena = contraseña;
+    this.contrasena = contrasena;
     this.telefono = telefono;
     this.rol = rol;
 

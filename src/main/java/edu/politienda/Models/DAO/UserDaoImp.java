@@ -49,9 +49,17 @@ public class UserDaoImp implements IUserDao {
     }
 
     @Override
-    public List<user> buscarPorEmail(String email) {
-        return em.createQuery("FROM Usuario u WHERE LOWER(u.emailInstitucional) LIKE LOWER(CONCAT('%', :email, '%'))", user.class).setParameter("email",email).getResultList();
+   public user buscarPorEmail(String email) {
+        List<user> resultado = em.createQuery("FROM Usuario u WHERE u.emailInstitucional = :email",user.class).setParameter("email", email).getResultList();
 
+        return resultado.isEmpty() ? null : resultado.get(0);
+    }
+
+    @Override
+    public user buscarPorPassword(String password) {
+        List<user> resultado = em.createQuery("FROM Usuario u WHERE u.contrasena = :password",user.class).setParameter("password", password).getResultList();
+
+        return resultado.isEmpty() ? null : resultado.get(0);
     }
     
 }

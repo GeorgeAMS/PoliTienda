@@ -23,7 +23,7 @@ public class productService {
     }
 
    @Transactional(readOnly = true)
-   public List<product> listarUsuarios() {
+   public List<product> listaProducts() {
         return productDao.listar();
     }
 
