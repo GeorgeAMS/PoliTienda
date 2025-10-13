@@ -1,0 +1,7 @@
+2025-10-12 17:26:00.775338-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "PRODUCT" not found (this database is empty); SQL statement:
+INSERT INTO product (nombre, money, stock) VALUES ('CafÃ© Molido Premium', 25000.00, 100) [42104-232]
+2025-10-12 18:58:42.777769-05:00 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Tabla "PRODUCT" no encontrada
+Table "PRODUCT" not found; SQL statement:
+INSERT INTO product (nombre, money, stock) VALUES ('CafÃ© Molido Premium', 25000.00, 100) [42102-232]

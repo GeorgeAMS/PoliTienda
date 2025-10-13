@@ -16,7 +16,7 @@ public class ProductDaoImp implements IProductDao {
 
     @Override
     public List<product> listar() {
-        return em.createQuery("from Productos", product.class).getResultList();
+        return em.createQuery("from product", product.class).getResultList();
     }
 
     @Override
@@ -44,12 +44,12 @@ public class ProductDaoImp implements IProductDao {
 
     @Override
     public List<product> buscarPorNombre(String nombre) {
-        return em.createQuery("FROM Productos p WHERE LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))", product.class).setParameter("nombre",nombre).getResultList();
+        return em.createQuery("FROM product p WHERE LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))", product.class).setParameter("nombre",nombre).getResultList();
     }
 
     @Override
     public product buscarPorNombreExacto(String nombre) {
-    List<product> resultado = em.createQuery("FROM Product p WHERE LOWER(p.nombre) = LOWER(:nombre)", product.class).setParameter("nombre", nombre).getResultList();
+    List<product> resultado = em.createQuery("FROM product p WHERE LOWER(p.nombre) = LOWER(:nombre)", product.class).setParameter("nombre", nombre).getResultList();
 
     return resultado.isEmpty() ? null : resultado.get(0);
 }
