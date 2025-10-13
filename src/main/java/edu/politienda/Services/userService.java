@@ -67,8 +67,16 @@ public class userService {
          return userDao.buscarPorEmail(email);
         }
 
-        public user buscarPorPassword(String password){
-            return userDao.buscarPorPassword(password);
+        @Transactional
+        public user autenticacion(String email, String contrasena){
+            user usuarioEncontrado = userDao.buscarPorEmail(email);
+
+            if(usuarioEncontrado == null){
+                return null;
+            }
+            if(usuarioEncontrado.getContrasena().equals(contrasena)){
+                return usuarioEncontrado;
+            }else return null;
         }
 
 }

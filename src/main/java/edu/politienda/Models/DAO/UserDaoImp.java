@@ -55,11 +55,6 @@ public class UserDaoImp implements IUserDao {
         return resultado.isEmpty() ? null : resultado.get(0);
     }
 
-    @Override
-    public user buscarPorPassword(String password) {
-        List<user> resultado = em.createQuery("FROM user u WHERE u.contrasena = :password",user.class).setParameter("password", password).getResultList();
-
-        return resultado.isEmpty() ? null : resultado.get(0);
-    }
+   
     
 }

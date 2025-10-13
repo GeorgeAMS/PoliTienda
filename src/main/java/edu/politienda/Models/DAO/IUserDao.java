@@ -18,5 +18,5 @@ public interface IUserDao {
 
     user buscarPorEmail(String email);
 
-    user buscarPorPassword(String password);
+   
 }
