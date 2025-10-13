@@ -33,7 +33,6 @@ public class userController {
 
     @GetMapping("/UsuariosNuevos")
     public String nuevo(Model model){
-        // Clave "Usuario" (singular, mayúscula)
         model.addAttribute("Usuario", new user());
         model.addAttribute("todosLosRoles", Rol.values()); 
         return "formUsuarios";
@@ -52,16 +51,19 @@ public class userController {
         return "formUsuarios";
     }
 
-    @PostMapping("/GuardarUsuarios")
-public String guardar(@Valid @ModelAttribute("Usuario") user u, BindingResult resultado,   RedirectAttributes flash, Model model) {
+    // userController.java
+
+@PostMapping("/GuardarUsuarios")
+public String guardar(@Valid @ModelAttribute("Usuario") user u, BindingResult resultado,RedirectAttributes flash, Model model) {
+    
     if (resultado.hasErrors()) {
+        
         model.addAttribute("todosLosRoles", edu.politienda.Models.ENTITY.Rol.values());
         model.addAttribute("titulo", (u.getIdUsuario() == null) ? "Crear Nuevo Usuario" : "Editando Usuario: " + u.getNombre());
-        flash.addFlashAttribute("error", "Error de validación. Revise todos los campos.");
-       
         return "formUsuarios"; 
     }
     
+
     try {
         servicioControlar.guardarUsuario(u);
         flash.addFlashAttribute("exito", "El usuario ha sido guardado de manera perfecta.");

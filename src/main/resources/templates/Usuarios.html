@@ -29,15 +29,9 @@
         <button type="button">➕ Crear Nuevo Usuario</button>
     </a>
 
-    <div th:if="${exito}" class="mensaje success">
-        <p th:text="${exito}"></p>
-    </div>
-    <div th:if="${error}" class="mensaje error">
-        <p th:text="${error}"></p>
-    </div>
-    <div th:if="${warning}" class="mensaje warning">
-        <p th:text="${warning}"></p>
-    </div>
+    <div th:if="${exito}" class="mensaje success"><p th:text="${exito}"></p></div>
+    <div th:if="${error}" class="mensaje error"><p th:text="${error}"></p></div>
+    <div th:if="${warning}" class="mensaje warning"><p th:text="${warning}"></p></div>
 
     <table>
         <thead>
@@ -45,24 +39,26 @@
                 <th>ID</th>
                 <th>Nombre</th>
                 <th>Email</th>
+                <th>Teléfono</th>
                 <th>Rol/Perfil</th>
                 <th>Acciones</th>
             </tr>
         </thead>
         <tbody>
             <tr th:each="u : ${Usuarios}">
-                <td th:text="${u.idUser}">1</td>
-                <td th:text="${u.nombre}">Arroz</td>
+                <td th:text="${u.IdUsuario}">1</td>
+                <td th:text="${u.Nombre}">Arroz</td>
                 <td th:text="${u.emailInstitucional}">...@elpoli.edu.co</td>
-                <td th:text="${u.Rol}">Admin/Cliente</td>
+                <td th:text="${u.telefono}">3001234567</td>
+                <td th:text="${u.rol}">Admin/Cliente</td> 
                 <td class="acciones">
-                    <a th:href="@{/Usuarios/EditarUsuario/{id}(id=${u.idUser})}">Editar</a>
-                    <a th:href="@{/Usuarios/eliminarUsuario/{id}(id=${u.idUser})}"
+                    <a th:href="@{/Usuarios/EditarUsuario/{id}(id=${u.IdUsuario})}">Editar</a>
+                    <a th:href="@{/Usuarios/eliminarUsuario/{id}(id=${u.IdUsuario})}"
                        onclick="return confirm('¿Estás seguro de que quieres eliminar este Usuario?');">Eliminar</a>
                 </td>
             </tr>
             <tr th:if="${#lists.isEmpty(Usuarios)}">
-                <td colspan="5">No hay Usuarios registrados.</td>
+                <td colspan="6">No hay Usuarios registrados.</td>
             </tr>
         </tbody>
     </table>

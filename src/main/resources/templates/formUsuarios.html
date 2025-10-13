@@ -25,21 +25,24 @@
 
     <label for="nombre">Nombre</label>
     <input type="text" th:field="*{Nombre}" placeholder="Nombre completo del usuario" required/>
+    <div th:if="${#fields.hasErrors('Nombre')}" th:errors="*{Nombre}" class="error">Error Nombre</div>
 
     <label for="emailInstitucional">Email Institucional</label>
     <input type="email" th:field="*{emailInstitucional}" placeholder="usuario@elpoli.edu.co" required/>
+    <div th:if="${#fields.hasErrors('emailInstitucional')}" th:errors="*{emailInstitucional}" class="error">Error Email</div>
+
 
     <label for="contrasena">Contraseña</label>
     <input type="password" th:field="*{contrasena}" placeholder="Contraseña segura" 
            th:required="${Usuario.IdUsuario == null}"/>
-           
+           <div th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}" class="error">Error Contraseña</div>
     <label for="telefono">Teléfono</label>
     <input type="text" th:field="*{telefono}" placeholder="Ej: 3001234567" required/>
+    <div th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class="error">Error Teléfono</div>
            
     <label for="rol">Rol/Perfil</label>
     <select th:field="*{rol}" required>
     <option value="">-- Seleccione un Rol --</option>
-    
     <option th:each="enumValor : ${todosLosRoles}" 
             th:value="${enumValor}" 
             th:text="${enumValor.name()}">ADMIN</option>

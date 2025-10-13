@@ -44,7 +44,7 @@ public class UserDaoImp implements IUserDao {
 
     @Override
     public List<user> buscarPorNombre(String nombre) {
-        return em.createQuery("FROM user u WHERE LOWER(u.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))", user.class).setParameter("nombre",nombre).getResultList();
+        return em.createQuery("FROM user u WHERE LOWER(u.Nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))", user.class).setParameter("nombre",nombre).getResultList();
         
     }
 
