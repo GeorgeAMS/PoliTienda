@@ -17,7 +17,7 @@ public class UserDaoImp implements IUserDao {
 
     @Override
     public List<user> listar() {
-        return em.createQuery("from Usuario", user.class ).getResultList();
+        return em.createQuery("from user", user.class ).getResultList();
     }
 
     @Override
@@ -44,20 +44,20 @@ public class UserDaoImp implements IUserDao {
 
     @Override
     public List<user> buscarPorNombre(String nombre) {
-        return em.createQuery("FROM Usuario u WHERE LOWER(u.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))", user.class).setParameter("nombre",nombre).getResultList();
+        return em.createQuery("FROM user u WHERE LOWER(u.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))", user.class).setParameter("nombre",nombre).getResultList();
         
     }
 
     @Override
    public user buscarPorEmail(String email) {
-        List<user> resultado = em.createQuery("FROM Usuario u WHERE u.emailInstitucional = :email",user.class).setParameter("email", email).getResultList();
+        List<user> resultado = em.createQuery("FROM user u WHERE u.emailInstitucional = :email",user.class).setParameter("email", email).getResultList();
 
         return resultado.isEmpty() ? null : resultado.get(0);
     }
 
     @Override
     public user buscarPorPassword(String password) {
-        List<user> resultado = em.createQuery("FROM Usuario u WHERE u.contrasena = :password",user.class).setParameter("password", password).getResultList();
+        List<user> resultado = em.createQuery("FROM user u WHERE u.contrasena = :password",user.class).setParameter("password", password).getResultList();
 
         return resultado.isEmpty() ? null : resultado.get(0);
     }

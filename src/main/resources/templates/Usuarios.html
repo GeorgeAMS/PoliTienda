@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Usuarios</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        table { width: 80%; border-collapse: collapse; margin-top: 20px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        .mensaje { padding: 10px; margin-bottom: 15px; border-radius: 5px; }
+        .success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .warning { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; }
+        .acciones a { margin-right: 10px; }
+    </style>
+</head>
+<body>
+
+    <h1>Inventario de Usuarios</h1>
+
+    <form th:action="@{/Usuarios/buscarUsuarios}" method="get" style="margin-bottom: 20px;">
+        <input type="text" name="nombre" placeholder="Buscar por nombre..." required/>
+        <button type="submit">🔍 Buscar</button>
+        <a th:href="@{/Usuarios}" style="margin-left: 10px;">Mostrar Todos</a>
+    </form>
+
+    <a th:href="@{/Usuarios/UsuariosNuevos}">
+        <button type="button">➕ Crear Nuevo Usuario</button>
+    </a>
+
+    <div th:if="${exito}" class="mensaje success">
+        <p th:text="${exito}"></p>
+    </div>
+    <div th:if="${error}" class="mensaje error">
+        <p th:text="${error}"></p>
+    </div>
+    <div th:if="${warning}" class="mensaje warning">
+        <p th:text="${warning}"></p>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Email</th>
+                <th>Rol/Perfil</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="u : ${Usuarios}">
+                <td th:text="${u.idUser}">1</td>
+                <td th:text="${u.nombre}">Arroz</td>
+                <td th:text="${u.emailInstitucional}">...@elpoli.edu.co</td>
+                <td th:text="${u.Rol}">Admin/Cliente</td>
+                <td class="acciones">
+                    <a th:href="@{/Usuarios/EditarUsuario/{id}(id=${u.idUser})}">Editar</a>
+                    <a th:href="@{/Usuarios/eliminarUsuario/{id}(id=${u.idUser})}"
+                       onclick="return confirm('¿Estás seguro de que quieres eliminar este Usuario?');">Eliminar</a>
+                </td>
+            </tr>
+            <tr th:if="${#lists.isEmpty(Usuarios)}">
+                <td colspan="5">No hay Usuarios registrados.</td>
+            </tr>
+        </tbody>
+    </table>
+
+</body>
+</html>

@@ -53,7 +53,7 @@ public class userService {
         }
 
         @Transactional
-        public void eliminarProducto(Long id) {
+        public void eliminarUsuarios(Long id) {
             userDao.eliminar(id);
         }
 

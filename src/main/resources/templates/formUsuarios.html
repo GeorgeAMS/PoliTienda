@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${titulo != null} ? ${titulo} : 'Nuevo Usuario'">Nuevo Usuario</title> 
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        form { max-width: 480px; }
+        label { display: block; margin-top: 12px; }
+        input { width: 100%; padding: 8px; box-sizing: border-box; } 
+        .acciones { margin-top: 16px; }
+        .acciones button, .acciones a { margin-right: 8px; }
+        .error { background: #f8d7da; color: #721c24; padding: 8px; border: 1px solid #f5c6cb; border-radius: 4px; }
+    </style>
+</head>
+<body>
+
+<h1 th:text="${titulo != null} ? ${titulo} : 'Crear Nuevo Usuario'">Crear Nuevo Usuario</h1>
+
+<div th:if="${error}" class="error" th:text="${error}"></div>
+
+<form th:action="@{/Usuarios/GuardarUsuarios}" th:object="${Usuario}" method="post">
+
+    <input type="hidden" th:field="*{IdUsuario}"/>
+
+    <label for="nombre">Nombre</label>
+    <input type="text" th:field="*{Nombre}" placeholder="Nombre completo del usuario" required/>
+
+    <label for="emailInstitucional">Email Institucional</label>
+    <input type="email" th:field="*{emailInstitucional}" placeholder="usuario@elpoli.edu.co" required/>
+
+    <label for="contrasena">Contraseña</label>
+    <input type="password" th:field="*{contrasena}" placeholder="Contraseña segura" 
+           th:required="${Usuario.IdUsuario == null}"/>
+           
+    <label for="telefono">Teléfono</label>
+    <input type="text" th:field="*{telefono}" placeholder="Ej: 3001234567" required/>
+           
+    <label for="rol">Rol/Perfil</label>
+    <select th:field="*{rol}" required>
+    <option value="">-- Seleccione un Rol --</option>
+    
+    <option th:each="enumValor : ${todosLosRoles}" 
+            th:value="${enumValor}" 
+            th:text="${enumValor.name()}">ADMIN</option>
+    </select>
+
+    <div class="acciones">
+        <button type="submit">💾 Guardar Usuario</button>
+        <a th:href="@{/Usuarios}">↩ Volver al Listado</a>
+    </div>
+</form>
+
+</body>
+</html>
