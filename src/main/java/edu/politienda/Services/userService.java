@@ -63,8 +63,12 @@ public class userService {
         }
 
          @Transactional
-        public List<user> buscarPorEmail(String email) {
+        public user buscarPorEmail(String email) {
          return userDao.buscarPorEmail(email);
+        }
+
+        public user buscarPorPassword(String password){
+            return userDao.buscarPorPassword(password);
         }
 
 }
