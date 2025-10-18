@@ -1,5 +1,7 @@
 package edu.politienda.Models.ENTITY;
 
+import java.math.BigDecimal;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -25,9 +27,9 @@ public class detalle {
     @JoinColumn(name = "id_producto",nullable = false)
     private product producto;
     private Integer cantidad;
-    private Double valorUnitario;
-    private Double descuento;
-    private Double valorTotalPorLinea;
+    private BigDecimal valorUnitario;
+    private BigDecimal descuento;
+    private BigDecimal valorTotalPorLinea;
 
     public detalle(){
 
@@ -65,27 +67,27 @@ public class detalle {
         this.cantidad = cantidad;
     }
 
-    public Double getValorUnitario() {
+    public BigDecimal getValorUnitario() {
         return valorUnitario;
     }
 
-    public void setValorUnitario(Double valorUnitario) {
+    public void setValorUnitario(BigDecimal valorUnitario) {
         this.valorUnitario = valorUnitario;
     }
 
-    public Double getDescuento() {
+    public BigDecimal getDescuento() {
         return descuento;
     }
 
-    public void setDescuento(Double descuento) {
+    public void setDescuento(BigDecimal descuento) {
         this.descuento = descuento;
     }
 
-    public Double getValorTotalPorLinea() {
+    public BigDecimal getValorTotalPorLinea() {
         return valorTotalPorLinea;
     }
 
-    public void setValorTotalPorLinea(Double valorTotalPorLinea) {
+    public void setValorTotalPorLinea(BigDecimal valorTotalPorLinea) {
         this.valorTotalPorLinea = valorTotalPorLinea;
     }
     

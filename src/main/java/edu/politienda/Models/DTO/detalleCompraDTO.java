@@ -1,11 +1,13 @@
 package edu.politienda.Models.DTO;
 
+import java.math.BigDecimal;
+
 public class detalleCompraDTO {
     
     
     private Long idProducto;
     private Integer cantidad;
-    private Double descuentoAplicado; 
+    private BigDecimal descuentoAplicado; 
 
     public detalleCompraDTO() {
     }
@@ -27,11 +29,11 @@ public class detalleCompraDTO {
         this.cantidad = cantidad;
     }
 
-    public Double getDescuentoAplicado() {
+    public BigDecimal getDescuentoAplicado() {
         return descuentoAplicado;
     }
 
-    public void setDescuentoAplicado(Double descuentoAplicado) {
+    public void setDescuentoAplicado(BigDecimal descuentoAplicado) {
         this.descuentoAplicado = descuentoAplicado;
     }
 } 

@@ -1,5 +1,6 @@
 package edu.politienda.Models.ENTITY;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,9 +28,9 @@ public class encabezado {
     private user cliente;
 
     private LocalDateTime fecha;
-    private Double subtotal;
-    private Double total;
-    private Double descuentoTotal;
+    private BigDecimal subtotal;
+    private BigDecimal total;
+    private BigDecimal descuentoTotal;
 
     @OneToMany(mappedBy = "encabezado", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<detalle> detalles;
@@ -62,27 +63,27 @@ public class encabezado {
         this.fecha = fecha;
     }
 
-    public double getSubtotal() {
+    public BigDecimal getSubtotal() {
         return subtotal;
     }
 
-    public void setSubtotal(Double subtotal) {
+    public void setSubtotal(BigDecimal subtotal) {
         this.subtotal = subtotal;
     }
 
-    public double getTotal() {
+    public BigDecimal getTotal() {
         return total;
     }
 
-    public void setTotal(Double total) {
+    public void setTotal(BigDecimal total) {
         this.total = total;
     }
 
-    public double getDescuentoTotal() {
+    public BigDecimal getDescuentoTotal() {
         return descuentoTotal;
     }
 
-    public void setDescuentoTotal(Double descuentoTotal) {
+    public void setDescuentoTotal(BigDecimal descuentoTotal) {
         this.descuentoTotal = descuentoTotal;
     }
 
