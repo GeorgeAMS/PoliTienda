@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Catálogo de Productos</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
+    <style>
+        :root {
+            --primary-color: #1173d4;
+            --background-light: #f6f7f8;
+            --text-dark: #333;
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.08);
+            --success-text: #52c41a;
+            --danger-text: #ff4d4f;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-light);
+            padding: 40px;
+        }
+
+        .header-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .nav-link {
+            text-decoration: none;
+            color: var(--primary-color);
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            transition: color 0.2s;
+        }
+
+        /* GRID DE PRODUCTOS */
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+        }
+
+        /* TARJETA DE PRODUCTO */
+        .product-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow-subtle);
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+        }
+        
+        .img-placeholder {
+            height: 180px; 
+            background-color: #f0f0f0; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center;
+            font-size: 3em;
+            color: #ccc;
+        }
+
+        .card-body { padding: 15px; }
+        
+        .price {
+            color: var(--primary-color);
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        
+        /* CONTROLES DE COMPRA */
+        .purchase-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .input-qty {
+            width: 70px; 
+            padding: 8px; 
+            border: 1px solid #ccc; 
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .btn-add {
+            background-color: #2ecc77; /* Verde para la acción principal */
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            flex-grow: 1;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+        }
+        
+        /* Mensajes */
+        .alert { padding: 10px; border-radius: 4px; margin-bottom: 20px; }
+        .alert-success { background-color: #d4edda; color: #155724; } 
+        .alert-error { background-color: #f8d7da; color: #721c24; } 
+        
+    </style>
+</head>
+<body>
+
+    <header class="header-nav">
+        <h1 style="color: var(--primary-color);">Catálogo de Productos</h1>
+        <div>
+            <a th:href="@{/carrito}" class="nav-link">
+                <span class="material-symbols-outlined">shopping_cart</span> 
+                Mi Carrito (<span th:text="${carritoTotalItems}">0</span>)
+            </a>
+            <a th:href="@{/logout}" class="nav-link" style="color: var(--text-dark); margin-left: 15px;">Cerrar Sesión</a>
+        </div>
+    </header>
+    
+    <div th:if="${success}" class="alert alert-success" th:text="${success}"></div>
+    <div th:if="${error}" class="alert alert-error" th:text="${error}"></div>
+
+    <div class="product-grid">
+        <div th:each="p : ${productos}" class="product-card">
+            
+            <div class="img-placeholder">
+                <span class="material-symbols-outlined">camera_alt</span>
+            </div>
+            
+            <div class="card-body">
+                <h2 style="font-size: 1.2em; margin-bottom: 5px;" th:text="${p.nombre}">Nombre Producto</h2>
+                
+                <p class="price" th:text="${#numbers.formatCurrency(p.money)}">$0.00</p>
+                
+                <p style="font-size: 0.9em; color: #888;">Stock: <span th:text="${p.stock}">50</span></p>
+
+                <form th:action="@{/productos/agregar}" method="post">
+                    
+                    <input type="hidden" name="idProducto" th:value="${p.idProduct}" /> 
+                    
+                    <div class="purchase-controls">
+                        <input type="number" name="cantidad" value="1" min="1" th:max="${p.stock}" class="input-qty" required />
+                        
+                        <button type="submit" class="btn-add" th:disabled="${p.stock == 0}">
+                            <span class="material-symbols-outlined" style="font-size: 1.2em;">add_shopping_cart</span>
+                            Añadir
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div th:if="${#lists.isEmpty(productos)}" style="grid-column: 1 / -1; text-align: center; padding: 50px;">
+            <p>No se encontraron productos disponibles en el catálogo.</p>
+        </div>
+    </div>
+</body>
+</html>

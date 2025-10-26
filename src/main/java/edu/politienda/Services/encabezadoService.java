@@ -25,11 +25,11 @@ public class encabezadoService {
     private final IProductDao productoDao;
     private final IUserDao userDao;
 
-    // Constante para el descuento por volumen (10%)
+
     private static final BigDecimal DIEZ_PORCIENTO = new BigDecimal("0.10");
-    // Constante para el valor neutro (cero)
+    
     private static final BigDecimal CERO = BigDecimal.ZERO;
-    // Constante para la escala de redondeo (2 decimales)
+    
     private static final int ESCALA_REDONDEO = 2;
 
 
@@ -68,23 +68,18 @@ public class encabezadoService {
                 throw new IllegalArgumentException("Stock insuficiente para el producto: " + p.getNombre() + ". Stock disponible: " + p.getStock());
             }
 
-            // 1. Obtener y preparar datos
+            
             BigDecimal valorUnitario = p.getMoney();
-            // Descuento manual: usa CERO si es nulo
+            
             BigDecimal descuentoManual = itemDto.getDescuentoAplicado() != null ? itemDto.getDescuentoAplicado() : CERO;
             
-            // 2. Regla de Descuento por Volumen
+        
             BigDecimal descuentoPorVolumen = CERO;
             if (cantidad >= 10) {
                 descuentoPorVolumen = DIEZ_PORCIENTO;
             }
 
-            // 3. Obtener el descuento final (usando .max() de BigDecimal)
-            // Se aplica el descuento más alto entre el manual y el de volumen
             BigDecimal descuentoFinal = descuentoManual.max(descuentoPorVolumen); 
-            
-            // 4. Cálculos con BigDecimal
-            
             // Convertir cantidad (Integer) a BigDecimal
             BigDecimal cantidadBD = BigDecimal.valueOf(cantidad);
             
@@ -97,40 +92,39 @@ public class encabezadoService {
                 .multiply(descuentoFinal)
                 .setScale(ESCALA_REDONDEO, RoundingMode.HALF_UP);
                 
-            // Cálculo Neto: valorLineaBruto - valorDescuentoLinea
             BigDecimal valorLineaNeto = valorLineaBruto.subtract(valorDescuentoLinea);
             
-            // 5. Crear Detalle y Asignar
+            
             detalle detalle = new detalle();
             detalle.setEncabezado(encabezado);
             detalle.setProducto(p);
             detalle.setCantidad(cantidad);
             
-            // Asignación de BigDecimal a la entidad Detalle
+            
             detalle.setValorUnitario(valorUnitario); 
             detalle.setDescuento(descuentoFinal); 
             detalle.setValorTotalPorLinea(valorLineaNeto);
             
             detallesDeFactura.add(detalle);
-            
-            // 6. Acumular Totales Generales (usando .add())
             subTotalVenta = subTotalVenta.add(valorLineaBruto);
             descuentoTotalVenta = descuentoTotalVenta.add(valorDescuentoLinea);
             
-            // 7. Actualizar Stock
+            
             p.setStock(p.getStock() - cantidad);
             productoDao.guardar(p);
         }
 
-        // 8. Finalizar Encabezado y Guardar
+       
         encabezado.setDetalles(detallesDeFactura);
         encabezado.setSubtotal(subTotalVenta);
         encabezado.setDescuentoTotal(descuentoTotalVenta);
         
-        // Cálculo del Total Final: SubTotal - DescuentoTotal
+       
         BigDecimal totalFinal = subTotalVenta.subtract(descuentoTotalVenta);
         encabezado.setTotal(totalFinal);
         
         return encabezadoDao.guardar(encabezado);
     }
+
+
 }

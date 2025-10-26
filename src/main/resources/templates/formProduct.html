@@ -3,41 +3,153 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${titulo != null} ? ${titulo} : 'Nuevo Producto'">Nuevo Producto</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { max-width: 480px; }
-        label { display: block; margin-top: 12px; }
-        input { width: 100%; padding: 8px; box-sizing: border-box; }
-        .acciones { margin-top: 16px; }
-        .acciones button, .acciones a { margin-right: 8px; }
-        .error { background: #f8d7da; color: #721c24; padding: 8px; border: 1px solid #f5c6cb; border-radius: 4px; }
+        :root {
+            --primary-color: #1173d4; /* Azul Primario */
+            --background-light: #f6f7f8;
+            --text-dark: #333;
+            --success-bg: #d4edda;
+            --danger-bg: #f8d7da;
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 40px; /* Padding similar al main-container */
+        }
+
+        /* TÍTULO */
+        .page-header {
+            color: var(--primary-color); 
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        /* TARJETA CONTENEDORA DEL FORMULARIO */
+        .form-card {
+            background-color: white;
+            border-radius: 12px; 
+            box-shadow: var(--shadow-subtle);
+            padding: 30px;
+            max-width: 600px; /* Límite de ancho para que no se vea estirado */
+            margin: 0 auto;
+        }
+
+        /* CAMPOS DE FORMULARIO */
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 5px;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            box-sizing: border-box; /* Crucial para que el padding no afecte el ancho */
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(17, 115, 212, 0.2);
+        }
+
+        /* BOTONES Y ACCIONES */
+        .acciones {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 4px rgba(17, 115, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        /* Mensajes de Validación y Error */
+        .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 8px; }
+        .alert-danger { 
+            background-color: var(--danger-bg); 
+            color: var(--danger-text); 
+            border-color: #f5c6cb; 
+            font-weight: 500;
+        }
+        .error-message {
+            color: var(--danger-text);
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: block;
+        }
     </style>
 </head>
 <body>
 
-<h1 th:text="${titulo != null} ? ${titulo} : 'Crear Producto'">Crear Producto</h1>
+<div class="form-card">
+    
+    <h1 class="page-header" th:text="${titulo != null} ? ${titulo} : 'Crear Producto'">Crear Producto</h1>
 
-<div th:if="${error}" class="error" th:text="${error}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-<form th:action="@{/productos/GuardarProducto}" th:object="${producto}" method="post">
+    <form th:action="@{/productos/GuardarProducto}" th:object="${producto}" method="post">
 
-    <!-- Hidden para ID cuando edites -->
-    <input type="hidden" th:field="*{idProduct}"/>
+        <input type="hidden" th:field="*{idProduct}"/>
 
-    <label>Nombre</label>
-    <input type="text" th:field="*{nombre}" placeholder="Nombre del producto" required/>
+        <label for="nombre">Nombre</label>
+        <input type="text" id="nombre" th:field="*{nombre}" placeholder="Nombre del producto" required class="input-field"/>
+        <div th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}" class="error-message">Error Nombre</div>
 
-    <label>Precio (Money)</label>
-    <input type="number" step="0.01" th:field="*{money}" placeholder="0.00" required/>
+        <label for="money">Precio (Money)</label>
+        <input type="number" id="money" step="0.01" th:field="*{money}" placeholder="0.00" required class="input-field"/>
+        <div th:if="${#fields.hasErrors('money')}" th:errors="*{money}" class="error-message">Error Precio</div>
 
-    <label>Stock</label>
-    <input type="number" th:field="*{stock}" min="0" placeholder="0" required/>
 
-    <div class="acciones">
-        <button type="submit">💾 Guardar</button>
-        <a th:href="@{/productos}">↩ Volver</a>
-    </div>
-</form>
+        <label for="stock">Stock</label>
+        <input type="number" id="stock" th:field="*{stock}" min="0" placeholder="0" required class="input-field"/>
+        <div th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}" class="error-message">Error Stock</div>
+
+        <div class="acciones">
+            <button type="submit" class="btn btn-primary">
+                <span class="material-symbols-outlined">save</span> Guardar
+            </button>
+            <a th:href="@{/productos}" class="btn btn-secondary">↩ Volver</a>
+        </div>
+    </form>
+    
+</div>
 
 </body>
 </html>

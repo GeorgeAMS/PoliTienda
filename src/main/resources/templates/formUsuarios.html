@@ -3,56 +3,179 @@
 <head>
     <meta charset="UTF-8">
     <title th:text="${titulo != null} ? ${titulo} : 'Nuevo Usuario'">Nuevo Usuario</title> 
+    
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+
     <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        form { max-width: 480px; }
-        label { display: block; margin-top: 12px; }
-        input { width: 100%; padding: 8px; box-sizing: border-box; } 
-        .acciones { margin-top: 16px; }
-        .acciones button, .acciones a { margin-right: 8px; }
-        .error { background: #f8d7da; color: #721c24; padding: 8px; border: 1px solid #f5c6cb; border-radius: 4px; }
+        :root {
+            --primary-color: #1173d4; /* Azul Primario */
+            --background-light: #f6f7f8;
+            --text-dark: #333;
+            --success-bg: #d4edda;
+            --danger-bg: #f8d7da;
+            --danger-text: #721c24;
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 40px; 
+            display: flex;
+            justify-content: center; /* Centra el formulario en la página */
+        }
+
+        /* TÍTULO */
+        .page-header {
+            color: var(--primary-color); 
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        /* 1. TARJETA CONTENEDORA DEL FORMULARIO */
+        .form-card {
+            background-color: white;
+            border-radius: 12px; 
+            box-shadow: var(--shadow-subtle);
+            padding: 30px;
+            width: 100%;
+            max-width: 600px; /* Límite de ancho para que se vea bien */
+        }
+
+        /* 2. CAMPOS DE FORMULARIO */
+        label {
+            display: block;
+            margin-top: 15px;
+            font-weight: 600;
+            color: #555;
+            font-size: 0.95em;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 10px 12px;
+            margin-top: 5px;
+            border: 1px solid #d9d9d9;
+            border-radius: 8px;
+            box-sizing: border-box; 
+            transition: border-color 0.2s;
+        }
+
+        .input-field:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(17, 115, 212, 0.2);
+        }
+        
+        /* Estilos específicos para SELECT */
+        select.input-field {
+             height: 40px; /* Altura uniforme con inputs */
+        }
+
+        /* 3. BOTONES Y ACCIONES */
+        .acciones {
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 2px 4px rgba(17, 115, 212, 0.3);
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            color: var(--primary-color);
+            border: 1px solid var(--primary-color);
+        }
+        
+        /* 4. Mensajes de Validación y Error */
+        .alert { padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 8px; }
+        .alert-danger { 
+            background-color: var(--danger-bg); 
+            color: var(--danger-text); 
+            border-color: #f5c6cb; 
+            font-weight: 500;
+        }
+        .error-message {
+            color: var(--danger-text);
+            font-size: 0.85em;
+            margin-top: 5px;
+            display: block;
+        }
     </style>
 </head>
 <body>
 
-<h1 th:text="${titulo != null} ? ${titulo} : 'Crear Nuevo Usuario'">Crear Nuevo Usuario</h1>
+<div class="form-card">
+    
+    <h1 class="page-header" th:text="${titulo != null} ? ${titulo} : 'Crear Nuevo Usuario'">Crear Nuevo Usuario</h1>
 
-<div th:if="${error}" class="error" th:text="${error}"></div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 
-<form th:action="@{/Usuarios/GuardarUsuarios}" th:object="${Usuario}" method="post">
+    <form th:action="@{/Usuarios/GuardarUsuarios}" th:object="${Usuario}" method="post">
 
-    <input type="hidden" th:field="*{IdUsuario}"/>
+        <input type="hidden" th:field="*{IdUsuario}"/>
 
-    <label for="nombre">Nombre</label>
-    <input type="text" th:field="*{Nombre}" placeholder="Nombre completo del usuario" required/>
-    <div th:if="${#fields.hasErrors('Nombre')}" th:errors="*{Nombre}" class="error">Error Nombre</div>
-
-    <label for="emailInstitucional">Email Institucional</label>
-    <input type="email" th:field="*{emailInstitucional}" placeholder="usuario@elpoli.edu.co" required/>
-    <div th:if="${#fields.hasErrors('emailInstitucional')}" th:errors="*{emailInstitucional}" class="error">Error Email</div>
+        <label for="Nombre">Nombre</label>
+        <input type="text" id="Nombre" th:field="*{Nombre}" placeholder="Nombre completo del usuario" required class="input-field"/>
+        <div th:if="${#fields.hasErrors('Nombre')}" th:errors="*{Nombre}" class="error-message">Error Nombre</div>
 
 
-    <label for="contrasena">Contraseña</label>
-    <input type="password" th:field="*{contrasena}" placeholder="Contraseña segura" 
-           th:required="${Usuario.IdUsuario == null}"/>
-           <div th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}" class="error">Error Contraseña</div>
-    <label for="telefono">Teléfono</label>
-    <input type="text" th:field="*{telefono}" placeholder="Ej: 3001234567" required/>
-    <div th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class="error">Error Teléfono</div>
-           
-    <label for="rol">Rol/Perfil</label>
-    <select th:field="*{rol}" required>
-    <option value="">-- Seleccione un Rol --</option>
-    <option th:each="enumValor : ${todosLosRoles}" 
-            th:value="${enumValor}" 
-            th:text="${enumValor.name()}">ADMIN</option>
-    </select>
+        <label for="emailInstitucional">Email Institucional</label>
+        <input type="email" id="emailInstitucional" th:field="*{emailInstitucional}" placeholder="usuario@elpoli.edu.co" required class="input-field"/>
+        <div th:if="${#fields.hasErrors('emailInstitucional')}" th:errors="*{emailInstitucional}" class="error-message">Error Email</div>
 
-    <div class="acciones">
-        <button type="submit">💾 Guardar Usuario</button>
-        <a th:href="@{/Usuarios}">↩ Volver al Listado</a>
-    </div>
-</form>
+
+        <label for="contrasena">Contraseña</label>
+        <input type="password" id="contrasena" th:field="*{contrasena}" placeholder="Contraseña segura" 
+               th:required="${Usuario.IdUsuario == null}" class="input-field"/>
+        <div th:if="${#fields.hasErrors('contrasena')}" th:errors="*{contrasena}" class="error-message">Error Contraseña</div>
+        
+        
+        <label for="telefono">Teléfono</label>
+        <input type="text" id="telefono" th:field="*{telefono}" placeholder="Ej: 3001234567" required class="input-field"/>
+        <div th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}" class="error-message">Error Teléfono</div>
+        
+        
+        <label for="rol">Rol/Perfil</label>
+        <select id="rol" th:field="*{rol}" required class="input-field">
+            <option value="">-- Seleccione un Rol --</option>
+            <option th:each="enumValor : ${todosLosRoles}" 
+                    th:value="${enumValor}" 
+                    th:text="${enumValor.name()}">ADMIN</option>
+        </select>
+        <div th:if="${#fields.hasErrors('rol')}" th:errors="*{rol}" class="error-message">Error Rol</div>
+
+
+        <div class="acciones">
+            <button type="submit" class="btn btn-primary">
+                <span class="material-symbols-outlined">save</span> Guardar Usuario
+            </button>
+            <a th:href="@{/Usuarios}" class="btn btn-secondary">↩ Volver al Listado</a>
+        </div>
+    </form>
+    
+</div>
 
 </body>
 </html>

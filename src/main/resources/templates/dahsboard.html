@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard de Administración</title>
+    
+    <style>
+        /* Estilos base (copiados de admin_base_layout o productos.html) */
+        :root {
+            --primary-color: #1173d4;
+            --background-light: #f6f7f8;
+            --text-dark: #333;
+            --text-light: #fefefe;
+            --shadow-subtle: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: var(--background-light);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Contenedor principal que simula el área de contenido */
+        .main-container {
+            padding: 40px; 
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* TÍTULO */
+        .page-header {
+            color: var(--primary-color); 
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #eee; /* Añadir borde para separar */
+            padding-bottom: 10px;
+        }
+
+        /* ESTILOS DE TARJETAS (INFO-CARD) */
+        .dashboard-grid {
+            display: flex;
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .info-card {
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-subtle);
+            text-decoration: none;
+            color: white;
+            width: 50%;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+        
+        .info-card h3 {
+            margin-top: 0;
+            font-size: 1.8em;
+            font-weight: 700;
+        }
+        
+        .card-products {
+            background-color: var(--primary-color); /* Azul Primario */
+        }
+        
+        .card-users {
+            background-color: #2ecc71; /* Verde Secundario */
+        }
+        
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+
+    <h1 class="page-header">Dashboard de Administración</h1>
+    
+    <p style="margin-bottom: 40px; color: #555;">Selecciona un módulo para gestionar los datos.</p>
+
+    <div class="dashboard-grid">
+        
+        <a th:href="@{/productos}" class="info-card card-products">
+            <h3>Gestión de Productos</h3>
+            <p style="margin-top: 10px;">Acceder al inventario y precios.</p>
+        </a>
+        
+        <a th:href="@{/Usuarios}" class="info-card card-users">
+            <h3>Gestión de Usuarios</h3>
+            <p style="margin-top: 10px;">Ver y editar clientes y roles.</p>
+        </a>
+        
+    </div>
+    
+</div>
+
+</body>
+</html>

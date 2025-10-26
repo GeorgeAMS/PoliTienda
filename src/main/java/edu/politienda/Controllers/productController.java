@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.politienda.Models.ENTITY.product;
+import edu.politienda.Services.carritoService;
 import edu.politienda.Services.productService;
 
 @Controller
@@ -13,12 +14,39 @@ import edu.politienda.Services.productService;
 public class productController {
 
     private final productService servicioControlar;
+    private final carritoService carritoService;
 
-    public productController(productService servicioControlar){
+    public productController(productService servicioControlar, carritoService carritoService){
         this.servicioControlar = servicioControlar;
+        this.carritoService = carritoService;
+    }       
+
+
+    @GetMapping("/catalogo") 
+    public String mostrarCatalogo(Model model){
+        model.addAttribute("productos", servicioControlar.listaProducts());
+        model.addAttribute("carritoTotalItems", carritoService.getTotalItems()); 
+        
+        return "catalogo_cliente"; 
     }
 
-    // Listado principal
+  @PostMapping("/agregar")
+    public String agregarAlCarrito(
+        @RequestParam Long idProducto,
+        @RequestParam int cantidad,
+        RedirectAttributes flash
+    ) {
+       
+        carritoService.agregarProductos(idProducto, cantidad); 
+        
+        flash.addFlashAttribute("success", "Producto agregado al carrito. Total: " + carritoService.getTotalItems());
+        
+        // Redirige al catálogo de compra del cliente
+        return "redirect:/productos/catalogo";
+    }               
+
+
+    // Listado principal admin
     @GetMapping
     public String listar(Model model){
         model.addAttribute("productos", servicioControlar.listaProducts());
