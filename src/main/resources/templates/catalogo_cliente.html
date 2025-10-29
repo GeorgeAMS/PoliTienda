@@ -139,7 +139,9 @@
         <div th:each="p : ${productos}" class="product-card">
             
             <div class="img-placeholder">
-                <span class="material-symbols-outlined">camera_alt</span>
+                <img th:src="@{/Css/images.webp}" 
+                th:alt="'Imagen de ' + ${p.nombre}" 
+                style="width: 100%; height: 100%; object-fit: cover;">
             </div>
             
             <div class="card-body">
@@ -150,14 +152,14 @@
                 <p style="font-size: 0.9em; color: #888;">Stock: <span th:text="${p.stock}">50</span></p>
 
                 <form th:action="@{/productos/agregar}" method="post">
-                    
+    
                     <input type="hidden" name="idProducto" th:value="${p.idProduct}" /> 
+                    
+                    <input type="hidden" name="nombre" th:value="${p.nombre}" /> 
                     
                     <div class="purchase-controls">
                         <input type="number" name="cantidad" value="1" min="1" th:max="${p.stock}" class="input-qty" required />
-                        
                         <button type="submit" class="btn-add" th:disabled="${p.stock == 0}">
-                            <span class="material-symbols-outlined" style="font-size: 1.2em;">add_shopping_cart</span>
                             Añadir
                         </button>
                     </div>

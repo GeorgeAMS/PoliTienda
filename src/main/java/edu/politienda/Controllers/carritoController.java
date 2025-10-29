@@ -19,8 +19,8 @@ import edu.politienda.Services.carritoService;
             this.carritoService = carritoService;
     }
  @PostMapping("/agregar")
-    public String agregarAlCarrito(@RequestParam Long idProducto,@RequestParam int cantidad,RedirectAttributes flash) {
-        carritoService.agregarProductos(idProducto, cantidad);
+    public String agregarAlCarrito(@RequestParam Long idProducto,@RequestParam int cantidad,@RequestParam String nombre,RedirectAttributes flash) {
+        carritoService.agregarProductos(idProducto, cantidad, nombre);
         
         flash.addFlashAttribute("success", "Producto agregado. Productos en carrito: " + carritoService.getTotalItems());
         
@@ -34,5 +34,12 @@ import edu.politienda.Services.carritoService;
         model.addAttribute("carritoItems", carritoService.getItems());
         
         return "carrito"; 
+    }
+
+        @PostMapping("/eliminar")
+    public String eliminarDelCarrito(@RequestParam Long idProducto, RedirectAttributes flash) {
+        carritoService.eliminarProducto(idProducto);
+        flash.addFlashAttribute("warning", "Producto eliminado. Total: " + carritoService.getTotalItems());
+        return "redirect:/carrito"; 
     }
 }

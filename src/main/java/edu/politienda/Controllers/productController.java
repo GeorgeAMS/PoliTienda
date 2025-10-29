@@ -34,10 +34,11 @@ public class productController {
     public String agregarAlCarrito(
         @RequestParam Long idProducto,
         @RequestParam int cantidad,
+        @RequestParam String nombre,
         RedirectAttributes flash
     ) {
        
-        carritoService.agregarProductos(idProducto, cantidad); 
+        carritoService.agregarProductos(idProducto, cantidad, nombre); 
         
         flash.addFlashAttribute("success", "Producto agregado al carrito. Total: " + carritoService.getTotalItems());
         

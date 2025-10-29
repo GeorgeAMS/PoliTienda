@@ -14,7 +14,7 @@ import edu.politienda.Models.DTO.detalleCompraDTO;
 public class carritoService {
     private List<detalleCompraDTO> productos = new ArrayList<>();
 
-    public void agregarProductos(Long idProducto, int cantidad){
+    public void agregarProductos(Long idProducto, int cantidad, String nombre){
         
         boolean productoEncontrado = false;
         
@@ -31,9 +31,10 @@ public class carritoService {
         if (!productoEncontrado) {
             detalleCompraDTO newItem = new detalleCompraDTO();
             newItem.setIdProducto(idProducto);
+            newItem.setNombre(nombre);
             newItem.setCantidad(cantidad);
             newItem.setDescuentoAplicado(BigDecimal.ZERO); 
-            productos.add(newItem); // <-- CORREGIDO: Solo se añade una vez al final
+            productos.add(newItem); 
         }
     }
 
@@ -51,5 +52,9 @@ public class carritoService {
                     total += item.getCantidad();
                 }
                 return total;
+            }
+
+            public void eliminarProducto(Long idProducto) {
+                productos.removeIf(item -> item.getIdProducto().equals(idProducto));
             }
 }

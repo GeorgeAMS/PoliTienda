@@ -6,6 +6,7 @@ public class detalleCompraDTO {
     
     
     private Long idProducto;
+    private String nombre;
     private Integer cantidad;
     private BigDecimal descuentoAplicado; 
 
@@ -35,6 +36,14 @@ public class detalleCompraDTO {
 
     public void setDescuentoAplicado(BigDecimal descuentoAplicado) {
         this.descuentoAplicado = descuentoAplicado;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 } 
     

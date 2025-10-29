@@ -4,18 +4,81 @@
     <meta charset="UTF-8">
     <title>Mi Carrito de Compras</title>
     <style>
-        /* CSS Básico */
-        body { font-family: Arial, sans-serif; padding: 40px; background-color: #f8f9fa; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
-        .cart-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-        .cart-table th, .cart-table td { border: 1px solid #eee; padding: 12px; text-align: left; }
-        .cart-table th { background-color: #f0f0f0; }
-        .totals-box { margin-top: 30px; padding: 20px; border: 1px solid #ddd; border-radius: 8px; width: 300px; margin-left: auto; background-color: #fff; }
+        /* CSS BÁSICO Y OPTIMIZADO */
+        body { 
+            font-family: Arial, sans-serif; 
+            padding: 40px; 
+            background-color: #f8f9fa; 
+            color: #333;
+        }
+        .container { 
+            max-width: 1000px; /* Aumenta el ancho */
+            margin: auto; 
+            background: white; 
+            padding: 30px; 
+            border-radius: 12px; /* Bordes más suaves */
+            box-shadow: 0 6px 15px rgba(0,0,0,0.1); /* Sombra más pronunciada */
+        }
+        
+        h1 { 
+            color: #1173d4; 
+            border-bottom: 2px solid #eee; 
+            padding-bottom: 10px; 
+            margin-bottom: 30px; 
+            font-weight: bold;
+        }
+
+        /* DISEÑO PRINCIPAL: TABLA Y RESUMEN EN PARALELO */
+        .cart-layout {
+            display: flex;
+            gap: 30px;
+            align-items: flex-start; /* Alinea los elementos a la parte superior */
+        }
+
+        /* TABLA DE PRODUCTOS (Cuerpo Principal) */
+        .cart-table-wrapper {
+            flex-grow: 1; /* Ocupa el espacio restante */
+        }
+        .cart-table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+        .cart-table th, .cart-table td { 
+            border: 1px solid #f0f0f0; 
+            padding: 12px; 
+            text-align: left; 
+            vertical-align: middle;
+            font-size: 0.95em;
+        }
+        .cart-table th { 
+            background-color: #f0f0f0; 
+            font-weight: bold;
+            color: #555;
+            text-transform: uppercase;
+        }
+        .cart-table tbody tr:hover {
+            background-color: #fafafa;
+        }
+
+        /* RESUMEN DE TOTALES (Box) */
+        .totals-box { 
+            width: 300px; /* Ancho fijo para la caja de resumen */
+            padding: 20px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            background-color: #fff;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .totals-box p {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+        }
         
         .btn-checkout { 
-            background-color: #2ecc71; 
+            background-color: #2ecc71; /* Verde de acción */
             color: white; 
-            padding: 15px 30px; 
+            padding: 12px 30px; 
             border: none; 
             border-radius: 8px; 
             cursor: pointer; 
@@ -23,9 +86,12 @@
             display: block;
             margin-top: 15px;
             width: 100%;
+            font-weight: bold;
         }
-        .btn-link { text-decoration: none; color: #007bff; margin-top: 20px; display: inline-block; }
+        .btn-link { text-decoration: none; color: #007bff; margin-top: 20px; display: inline-block; font-weight: 500; }
         .alert-error { color: #dc3545; background-color: #f8d7da; padding: 10px; border-radius: 4px; margin-bottom: 20px; }
+        .alert-success { color: #155724; background-color: #d4edda; padding: 10px; border-radius: 4px; margin-bottom: 20px; }
+        
     </style>
 </head>
 <body>
@@ -34,48 +100,73 @@
     <h1>Tu Carrito de Compras</h1>
 
     <div th:if="${error}" class="alert-error" th:text="${error}"></div>
+    <div th:if="${success}" class="alert-success" th:text="${success}"></div> 
     
-    <form th:action="@{/venta/checkout}" method="post">
-    
-        <table class="cart-table">
-            <thead>
-                <tr>
-                    <th>ID Producto</th>
-                    <th>Cantidad</th>
-                    <th>Descuento Manual</th>
-                    <th>Acción</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr th:each="item : ${carritoItems}">
-                    <td th:text="${item.idProducto}">[ID Producto]</td>
-                    <td th:text="${item.cantidad}">[Cantidad]</td>
-                    <td th:text="${item.descuentoAplicado}">0.0</td>
-                    <td>
-                        <button type="button" style="color: red; background: none; border: none; cursor: pointer;">Quitar</button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div th:if="${carritoItems.isEmpty()}" style="text-align: center; margin-top: 50px;">
-            <p>El carrito está vacío. ¡Es hora de comprar!</p>
+    <div class="cart-layout">
+        
+        <div class="cart-table-wrapper">
+        
+            <div th:if="${carritoItems.isEmpty()}" style="text-align: center; padding: 50px; border: 1px solid #eee; border-radius: 8px;">
+                <p style="font-size: 1.2em;">El carrito está vacío. 🥺</p>
+            </div>
+            
+            <div th:unless="${carritoItems.isEmpty()}">
+                <table class="cart-table">
+                    <thead>
+                        <tr>
+                            <th>ID Producto</th>
+                            <th>Nombre</th>
+                            <th>Cantidad</th>
+                            <th>Descuento Manual</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="item : ${carritoItems}">
+                            <td th:text="${item.idProducto}">[ID Producto]</td>
+                            <td th:text="${item.nombre}">[Nombre]</td>
+                            <td th:text="${item.cantidad}">[Cantidad]</td>
+                            <td th:text="${item.descuentoAplicado}">0.0</td> 
+                            <td>
+                                <form th:action="@{/carrito/eliminar}" method="post" style="display: inline;">
+                                    <input type="hidden" name="idProducto" th:value="${item.idProducto}" />
+                                    <button type="submit" 
+                                            style="color: red; background: none; border: none; cursor: pointer; padding: 0; font-weight: bold;"
+                                            onclick="return confirm('¿Estás seguro de que quieres quitar este ítem?');">
+                                        Quitar
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <a th:href="@{/productos/catalogo}" class="btn-link">← Continuar Comprando</a>
         </div>
         
-        <div th:unless="${carritoItems.isEmpty()}" class="totals-box">
-            <p>Ítems Totales: <span th:text="${#lists.size(carritoItems)}"></span></p>
-            
-            <p style="font-weight: bold; font-size: 1.2em; margin-top: 10px;">Listo para pagar</p>
-            
-            <button type="submit" class="btn-checkout">
-                FINALIZAR COMPRA Y FACTURAR
-            </button>
+        <div th:unless="${carritoItems.isEmpty()}">
+            <form th:action="@{/venta/checkout}" method="post">
+                <div class="totals-box">
+                    <h3 style="font-size: 1.4em; margin-bottom: 20px;">Resumen de la Compra</h3>
+                    
+                    <p>Ítems Únicos: <span><span th:text="${#lists.size(carritoItems)}"></span></span></p>
+                    
+                    <p>Cantidad Total de Tipos de Producto: <span><span th:text="${#lists.size(carritoItems)}"></span></span></p>
+
+
+                    <hr style="margin: 15px 0;">
+                    
+                    <p style="font-weight: bold; font-size: 1.2em; margin-top: 10px;">Listo para pagar</p>
+                    
+                    <button type="submit" class="btn-checkout">
+                        FINALIZAR COMPRA Y FACTURAR
+                    </button>
+                </div>
+            </form>
         </div>
-    </form>
-    
-    <a th:href="@{/productos/catalogo}" class="btn-link">← Continuar Comprando</a>
-
+        
+    </div>
 </div>
-
 </body>
 </html>
