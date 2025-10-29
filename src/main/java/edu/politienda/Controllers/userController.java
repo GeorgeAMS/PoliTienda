@@ -51,7 +51,7 @@ public class userController {
         return "formUsuarios";
     }
 
-    // userController.java
+    
 
 @PostMapping("/GuardarUsuarios")
 public String guardar(@Valid @ModelAttribute("Usuario") user u, BindingResult resultado,RedirectAttributes flash, Model model) {

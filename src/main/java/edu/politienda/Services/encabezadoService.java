@@ -126,5 +126,8 @@ public class encabezadoService {
         return encabezadoDao.guardar(encabezado);
     }
 
+    public encabezado buscarPorId(Long id) {
+        return encabezadoDao.buscarPorId(id); 
+    }
 
 }

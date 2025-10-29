@@ -42,26 +42,25 @@ public class productController {
         
         flash.addFlashAttribute("success", "Producto agregado al carrito. Total: " + carritoService.getTotalItems());
         
-        // Redirige al catálogo de compra del cliente
         return "redirect:/productos/catalogo";
     }               
 
 
-    // Listado principal admin
+  
     @GetMapping
     public String listar(Model model){
         model.addAttribute("productos", servicioControlar.listaProducts());
-        return "productos"; // <-- corresponde a productos.html
+        return "productos"; 
     }
 
-    // Formulario nuevo
+    
     @GetMapping("/ProductoNuevo")
     public String nuevo(Model model){
         model.addAttribute("producto", new product());
         return "formProduct";
     }
 
-    // Formulario editar
+    
     @GetMapping("/EditarProducto/{id}")
     public String editar(@PathVariable Long id, Model model, RedirectAttributes flash){
         var p = servicioControlar.buscarPorId(id);
@@ -74,7 +73,7 @@ public class productController {
         return "formProduct";
     }
 
-    // Guardar (crear/actualizar)
+    
     @PostMapping("/GuardarProducto")
     public String guardar(@ModelAttribute product p, RedirectAttributes flash){
         try {
@@ -88,7 +87,7 @@ public class productController {
         }
     }
 
-    // Eliminar
+    
     @GetMapping("/eliminarProducto/{id}")
     public String eliminar(@PathVariable Long id, RedirectAttributes flash){
         servicioControlar.eliminarProducto(id);
@@ -96,7 +95,7 @@ public class productController {
         return "redirect:/productos";
     }
 
-    // Buscar por nombre
+    
     @GetMapping("/buscarProducto")
     public String buscarPorNombre(@RequestParam("nombre") String nombre, Model model) {
         model.addAttribute("productos", servicioControlar.buscarPorNombre(nombre));

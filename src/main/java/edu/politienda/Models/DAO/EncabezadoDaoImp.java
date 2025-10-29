@@ -20,5 +20,10 @@ public class EncabezadoDaoImp implements IEncabezadoDao{
         }
         return encabezado;
     }
+
+    @Override
+    public encabezado buscarPorId(Long Id) {
+        return em.find(encabezado.class, Id);
+    }
     
 }
