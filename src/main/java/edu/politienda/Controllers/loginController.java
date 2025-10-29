@@ -22,40 +22,28 @@ public class loginController {
         this.servicioUsuario = servicioUsuario;
     }
 
-    // -------------------------------------------------------------------------
-    // 1. GET: Mostrar el formulario de login
-    // Mapea a /login
-    // -------------------------------------------------------------------------
+    
     @GetMapping({"/","/login"})
     public String showLoginForm(Model model) {
-        // Inicializa el objeto DTO para el formulario Thymeleaf
         model.addAttribute("loginDto", new loginDTO()); 
-        return "login"; // Devuelve la vista login.html
+        return "login"; 
     }
 
-    // -------------------------------------------------------------------------
-    // 2. POST: Procesar la solicitud y autenticar
-    // Mapea a /login
-    // -------------------------------------------------------------------------
-    @PostMapping("/login")
-    public String authenticate(@ModelAttribute("loginDto") loginDTO loginDto, 
-                               HttpSession session, 
-                               RedirectAttributes flash) {
 
-        // 1. Llama al método de autenticación del servicio
-        user authenticatedUser = servicioUsuario.autenticacion(
-            loginDto.getEmailInstitucional(), 
-            loginDto.getContrasena()
+    @PostMapping("/login")
+    public String authenticate(@ModelAttribute("loginDto") loginDTO loginDto,HttpSession session,  RedirectAttributes flash) {
+
+    
+        user authenticatedUser = servicioUsuario.autenticacion(loginDto.getEmailInstitucional(), loginDto.getContrasena()
         );
 
         if (authenticatedUser != null) {
             
-            // 2. Autenticación Exitosa: Guardar el usuario en la sesión
             session.setAttribute("userSession", authenticatedUser); 
             
-            String rol = authenticatedUser.getRol().name(); // Asumiendo que getRol() devuelve un Enum y usamos .name()
+            String rol = authenticatedUser.getRol().name(); 
 
-            // 3. Redirección basada en el rol
+        
             if ("ADMIN".equals(rol)) {
                 flash.addFlashAttribute("exito", "Bienvenido, Administrador.");
                 return "redirect:/dahsboard"; 
@@ -64,25 +52,22 @@ public class loginController {
                 return "redirect:/productos/catalogo"; 
             }
             
-            // Rol no reconocido
+            
             flash.addFlashAttribute("error", "Error de configuración de rol.");
             return "redirect:/login";
 
         } else {
-            // 4. Autenticación Fallida
+            
             flash.addFlashAttribute("error", "Credenciales inválidas. Verifique email y contraseña.");
             return "redirect:/login";
         }
     }
     
-    // -------------------------------------------------------------------------
-    // 3. GET: Cerrar Sesión (Logout)
-    // Mapea a /logout
-    // -------------------------------------------------------------------------
+    
     @GetMapping("/logout")
     public String logout(HttpSession session, RedirectAttributes flash) {
-        session.invalidate(); // Invalida la sesión actual
+        session.invalidate();
         flash.addFlashAttribute("warning", "Sesión cerrada con éxito.");
-        return "redirect:/login"; // Redirige a la página de login
+        return "redirect:/login"; 
     }
 }
